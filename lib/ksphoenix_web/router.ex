@@ -20,12 +20,19 @@ defmodule KsphoenixWeb.Router do
   scope "/", KsphoenixWeb do
     pipe_through :browser
 
+
     get "/", PageController, :home
   end
 
 
   scope "/", KsphoenixWeb do
     pipe_through :browser
+    live "/posts", PostLive.Index, :index
+    live "/posts/new", PostLive.Index, :new
+    live "/posts/:id/edit", PostLive.Index, :edit
+
+    live "/posts/:id", PostLive.Show, :show
+    live "/posts/:id/show/edit", PostLive.Show, :edit
 
     get "/canvas", PageController, :canvas
   end
@@ -89,4 +96,10 @@ defmodule KsphoenixWeb.Router do
       live "/users/confirm", UserConfirmationInstructionsLive, :new
     end
   end
+      live "/posts", PostLive.Index, :index
+    live "/posts/new", PostLive.Index, :new
+    live "/posts/:id/edit", PostLive.Index, :edit
+
+    live "/posts/:id", PostLive.Show, :show
+    live "/posts/:id/show/edit", PostLive.Show, :edit
 end
