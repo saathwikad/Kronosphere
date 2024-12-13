@@ -12,25 +12,26 @@ defmodule KsphoenixWeb.HomeLive do
         <span style="font-size: 24px; animation: arrow 1s infinite; margin-left: 15px;">→</span>
       </.link>
 
-      <a href="#" style="display: flex; justify-content: space-between; align-items: center; background-color: #3498db; color: white; padding: 40px; font-size: 28px; text-align: center; border-radius: 12px; transition: background-color 0.3s ease; cursor: pointer; text-decoration: none; font-weight: bold; position: relative;">
-        <span>Event Calendar</span>
-        <span style="font-size: 24px; animation: arrow 1s infinite; margin-left: 15px;">→</span>
-      </a>
+    <.link navigate={~p"/tasks"} class="button" style="display: flex; justify-content: space-between; align-items: center; background-color: #3498db; color: white; padding: 40px; font-size: 28px; text-align: center; border-radius: 12px; transition: background-color 0.3s ease; cursor: pointer; text-decoration: none; font-weight: bold; position: relative;">
+      <span>Event Planner</span>
+      <span style="font-size: 24px; animation: arrow 1s infinite; margin-left: 15px;">→</span>
+    </.link>
 
-      <a href="#" style="display: flex; justify-content: space-between; align-items: center; background-color: #3498db; color: white; padding: 40px; font-size: 28px; text-align: center; border-radius: 12px; transition: background-color 0.3s ease; cursor: pointer; text-decoration: none; font-weight: bold; position: relative;">
-        <span>Canvas</span>
-        <span style="font-size: 24px; animation: arrow 1s infinite; margin-left: 15px;">→</span>
-      </a>
+    <.link navigate={~p"/tasks"} class="button" style="display: flex; justify-content: space-between; align-items: center; background-color: #3498db; color: white; padding: 40px; font-size: 28px; text-align: center; border-radius: 12px; transition: background-color 0.3s ease; cursor: pointer; text-decoration: none; font-weight: bold; position: relative;">
+      <span>Creative Canvas</span>
+      <span style="font-size: 24px; animation: arrow 1s infinite; margin-left: 15px;">→</span>
+    </.link>
 
-      <a href="#" style="display: flex; justify-content: space-between; align-items: center; background-color: #3498db; color: white; padding: 40px; font-size: 28px; text-align: center; border-radius: 12px; transition: background-color 0.3s ease; cursor: pointer; text-decoration: none; font-weight: bold; position: relative;">
-        <span>Eisenhower Matrix</span>
-        <span style="font-size: 24px; animation: arrow 1s infinite; margin-left: 15px;">→</span>
-      </a>
+    <.link navigate={~p"/tasks"} class="button" style="display: flex; justify-content: space-between; align-items: center; background-color: #3498db; color: white; padding: 40px; font-size: 28px; text-align: center; border-radius: 12px; transition: background-color 0.3s ease; cursor: pointer; text-decoration: none; font-weight: bold; position: relative;">
+      <span>Task Prioritization Matrix</span>
+      <span style="font-size: 24px; animation: arrow 1s infinite; margin-left: 15px;">→</span>
+    </.link>
 
-      <a href="#" style="display: flex; justify-content: space-between; align-items: center; background-color: #3498db; color: white; padding: 40px; font-size: 28px; text-align: center; border-radius: 12px; transition: background-color 0.3s ease; cursor: pointer; text-decoration: none; font-weight: bold; position: relative;">
-        <span>Post-It's</span>
-        <span style="font-size: 24px; animation: arrow 1s infinite; margin-left: 15px;">→</span>
-      </a>
+    <.link navigate={~p"/tasks"} class="button" style="display: flex; justify-content: space-between; align-items: center; background-color: #3498db; color: white; padding: 40px; font-size: 28px; text-align: center; border-radius: 12px; transition: background-color 0.3s ease; cursor: pointer; text-decoration: none; font-weight: bold; position: relative;">
+      <span>Sticky Notes</span>
+      <span style="font-size: 24px; animation: arrow 1s infinite; margin-left: 15px;">→</span>
+    </.link>
+
     </div>
 
     <style>
