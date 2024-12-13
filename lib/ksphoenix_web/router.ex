@@ -1,4 +1,5 @@
 defmodule KsphoenixWeb.Router do
+  alias KsphoenixWeb.Live.CalendarComponent
   use KsphoenixWeb, :router
 
   import KsphoenixWeb.UserAuth
@@ -33,6 +34,8 @@ defmodule KsphoenixWeb.Router do
 
     live "/posts/:id", PostLive.Show, :show
     live "/posts/:id/show/edit", PostLive.Show, :edit
+    live "/calendar", Live.CalendarLive
+
 
     get "/canvas", PageController, :canvas
   end
