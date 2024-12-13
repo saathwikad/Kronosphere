@@ -17,24 +17,15 @@ defmodule KsphoenixWeb.Router do
     plug :accepts, ["json"]
   end
 
+  # General scope for routes that everyone can access
   scope "/", KsphoenixWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    # Add general-purpose routes here in the future, if needed
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", KsphoenixWeb do
-  #   pipe_through :api
-  # end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:ksphoenix, :dev_routes) do
-    # If you want to use the LiveDashboard in production, you should put
-    # it behind authentication and allow only admins to access it.
-    # If your application does not have an admins-only section yet,
-    # you can use Plug.BasicAuth to set up some basic authentication
-    # as long as you are also using SSL (which you should anyway).
     import Phoenix.LiveDashboard.Router
 
     scope "/dev" do
@@ -45,10 +36,13 @@ defmodule KsphoenixWeb.Router do
     end
   end
 
-  ## Authentication routes
+  ## Authentication Routes
 
+  # Routes for unauthenticated users
   scope "/", KsphoenixWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
+
+    get "/", PageController, :home
 
     live_session :redirect_if_user_is_authenticated,
       on_mount: [{KsphoenixWeb.UserAuth, :redirect_if_user_is_authenticated}] do
@@ -61,16 +55,19 @@ defmodule KsphoenixWeb.Router do
     post "/users/log_in", UserSessionController, :create
   end
 
+  # Routes for authenticated users
   scope "/", KsphoenixWeb do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :require_authenticated_user,
       on_mount: [{KsphoenixWeb.UserAuth, :ensure_authenticated}] do
+      live "/home", HomeLive, :index
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
     end
   end
 
+  # Routes for general purposes (e.g., logout, confirmation)
   scope "/", KsphoenixWeb do
     pipe_through [:browser]
 
