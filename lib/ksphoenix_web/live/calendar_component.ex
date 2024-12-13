@@ -31,7 +31,7 @@ defmodule KsphoenixWeb.Live.CalendarComponent do
       <table class="calendar-table w-full border-collapse text-center">
         <thead>
           <tr class="bg-gray-100">
-            <th :for={week_day <- List.first(@week_rows)} class="py-2 text-gray-600 font-medium">
+            <th :for={week_day <- List.first(@week_rows)} class="py-2 text-gray-600 font-small">
               <%= Calendar.strftime(week_day, "%a") %>
             </th>
           </tr>
