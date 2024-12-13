@@ -3,7 +3,7 @@ defmodule Ksphoenix.Tasks.Task do
   import Ecto.Changeset
 
   schema "tasks" do
-    field :status, :string
+    field :status, :string, default: "pending"
     field :description, :string
     field :title, :string
     field :due_date, :naive_datetime

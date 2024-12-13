@@ -55,17 +55,25 @@ defmodule KsphoenixWeb.Router do
     post "/users/log_in", UserSessionController, :create
   end
 
-  # Routes for authenticated users
-  scope "/", KsphoenixWeb do
-    pipe_through [:browser, :require_authenticated_user]
+# Routes for authenticated users
+scope "/", KsphoenixWeb do
+  pipe_through [:browser, :require_authenticated_user]
 
-    live_session :require_authenticated_user,
-      on_mount: [{KsphoenixWeb.UserAuth, :ensure_authenticated}] do
-      live "/home", HomeLive, :index
-      live "/users/settings", UserSettingsLive, :edit
-      live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
-    end
+  live_session :require_authenticated_user,
+    on_mount: [{KsphoenixWeb.UserAuth, :ensure_authenticated}] do
+    live "/home", HomeLive, :index
+    live "/users/settings", UserSettingsLive, :edit
+    live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+
+    # Add these routes for tasks
+    live "/tasks", TaskLive.Index, :index
+    live "/tasks/new", TaskLive.Index, :new
+    live "/tasks/:id/edit", TaskLive.Index, :edit
+    live "/tasks/:id", TaskLive.Show, :show
+    live "/tasks/:id/show/edit", TaskLive.Show, :edit
   end
+end
+
 
   # Routes for general purposes (e.g., logout, confirmation)
   scope "/", KsphoenixWeb do
