@@ -6,8 +6,9 @@ defmodule Ksphoenix.Tasks.Task do
     field :status, :string, default: "pending"
     field :description, :string
     field :title, :string
-    field :due_date, :naive_datetime
-    field :user_id, :id
+    field :due_date, :date
+    field :is_completed, :boolean, default: false
+    field :task_type, :string
 
     timestamps()
   end
@@ -15,7 +16,7 @@ defmodule Ksphoenix.Tasks.Task do
   @doc false
   def changeset(task, attrs) do
     task
-    |> cast(attrs, [:title, :description, :due_date, :status])
-    |> validate_required([:title, :description, :due_date, :status])
+    |> cast(attrs, [:title, :description, :due_date, :status, :is_completed, :task_type])
+    |> validate_required([:title, :description, :due_date, :status, :is_completed, :task_type])
   end
 end

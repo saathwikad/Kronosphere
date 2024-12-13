@@ -20,4 +20,23 @@ defmodule Ksphoenix.TasksFixtures do
 
     task
   end
+
+  @doc """
+  Generate a task.
+  """
+  def task_fixture(attrs \\ %{}) do
+    {:ok, task} =
+      attrs
+      |> Enum.into(%{
+        description: "some description",
+        due_date: ~D[2024-12-12],
+        is_completed: true,
+        status: "some status",
+        task_type: "some task_type",
+        title: "some title"
+      })
+      |> Ksphoenix.Tasks.create_task()
+
+    task
+  end
 end

@@ -8,22 +8,27 @@ defmodule KsphoenixWeb.HomeLive do
     
     <div style="display: flex; flex-direction: column; gap: 30px; width: 100%; padding: 40px; margin-top: 20px;">
       <.link navigate={~p"/tasks"} class="button" style="display: flex; justify-content: space-between; align-items: center; background-color: #3498db; color: white; padding: 40px; font-size: 28px; text-align: center; border-radius: 12px; transition: background-color 0.3s ease; cursor: pointer; text-decoration: none; font-weight: bold; position: relative;">
-        <span>Block 1</span>
+        <span>Pomodoro</span>
         <span style="font-size: 24px; animation: arrow 1s infinite; margin-left: 15px;">→</span>
       </.link>
 
       <a href="#" style="display: flex; justify-content: space-between; align-items: center; background-color: #3498db; color: white; padding: 40px; font-size: 28px; text-align: center; border-radius: 12px; transition: background-color 0.3s ease; cursor: pointer; text-decoration: none; font-weight: bold; position: relative;">
-        <span>Block 2</span>
+        <span>Event Calendar</span>
         <span style="font-size: 24px; animation: arrow 1s infinite; margin-left: 15px;">→</span>
       </a>
 
       <a href="#" style="display: flex; justify-content: space-between; align-items: center; background-color: #3498db; color: white; padding: 40px; font-size: 28px; text-align: center; border-radius: 12px; transition: background-color 0.3s ease; cursor: pointer; text-decoration: none; font-weight: bold; position: relative;">
-        <span>Block 3</span>
+        <span>Canvas</span>
         <span style="font-size: 24px; animation: arrow 1s infinite; margin-left: 15px;">→</span>
       </a>
 
       <a href="#" style="display: flex; justify-content: space-between; align-items: center; background-color: #3498db; color: white; padding: 40px; font-size: 28px; text-align: center; border-radius: 12px; transition: background-color 0.3s ease; cursor: pointer; text-decoration: none; font-weight: bold; position: relative;">
-        <span>Block 4</span>
+        <span>Eisenhower Matrix</span>
+        <span style="font-size: 24px; animation: arrow 1s infinite; margin-left: 15px;">→</span>
+      </a>
+
+      <a href="#" style="display: flex; justify-content: space-between; align-items: center; background-color: #3498db; color: white; padding: 40px; font-size: 28px; text-align: center; border-radius: 12px; transition: background-color 0.3s ease; cursor: pointer; text-decoration: none; font-weight: bold; position: relative;">
+        <span>Post-It's</span>
         <span style="font-size: 24px; animation: arrow 1s infinite; margin-left: 15px;">→</span>
       </a>
     </div>

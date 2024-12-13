@@ -4,9 +4,9 @@ defmodule KsphoenixWeb.TaskLiveTest do
   import Phoenix.LiveViewTest
   import Ksphoenix.TasksFixtures
 
-  @create_attrs %{status: "some status", description: "some description", title: "some title", due_date: "2024-12-11T08:50:00"}
-  @update_attrs %{status: "some updated status", description: "some updated description", title: "some updated title", due_date: "2024-12-12T08:50:00"}
-  @invalid_attrs %{status: nil, description: nil, title: nil, due_date: nil}
+  @create_attrs %{status: "some status", description: "some description", title: "some title", due_date: "2024-12-12", is_completed: true, task_type: "some task_type"}
+  @update_attrs %{status: "some updated status", description: "some updated description", title: "some updated title", due_date: "2024-12-13", is_completed: false, task_type: "some updated task_type"}
+  @invalid_attrs %{status: nil, description: nil, title: nil, due_date: nil, is_completed: false, task_type: nil}
 
   defp create_task(_) do
     task = task_fixture()

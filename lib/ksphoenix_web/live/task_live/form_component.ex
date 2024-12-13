@@ -21,8 +21,10 @@ defmodule KsphoenixWeb.TaskLive.FormComponent do
       >
         <.input field={@form[:title]} type="text" label="Title" />
         <.input field={@form[:description]} type="text" label="Description" />
-        <.input field={@form[:due_date]} type="datetime-local" label="Due date" />
+        <.input field={@form[:due_date]} type="date" label="Due date" />
         <.input field={@form[:status]} type="text" label="Status" />
+        <.input field={@form[:is_completed]} type="checkbox" label="Is completed" />
+        <.input field={@form[:task_type]} type="text" label="Task type" />
         <:actions>
           <.button phx-disable-with="Saving...">Save Task</.button>
         </:actions>

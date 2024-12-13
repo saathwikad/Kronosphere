@@ -3,3 +3,17 @@
 @import "tailwindcss/utilities";
 
 /* This file is for your main application CSS */
+.task {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  .task.pending {
+    background-color: #f8d7da;
+  }
+  
+  .task.completed {
+    background-color: #d4edda;
+  }
+  

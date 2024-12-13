@@ -9,7 +9,7 @@ defmodule Ksphoenix.Tasks do
   alias Ksphoenix.Tasks.Task
 
   @doc """
-  Returns the list of tasks.
+  Lists all tasks.
 
   ## Examples
 
@@ -21,7 +21,7 @@ defmodule Ksphoenix.Tasks do
     Repo.all(Task)
   end
 
-  @doc """
+   @doc """
   Gets a single task.
 
   Raises `Ecto.NoResultsError` if the Task does not exist.
