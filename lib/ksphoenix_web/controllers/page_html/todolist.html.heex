@@ -45,8 +45,8 @@
         width: 100%;
         max-width: 400px;
         backdrop-filter: blur(5px);
-        animation: slideInRight 0.6s ease-out, fadeIn 1s forwards; /* Slide-in from right and fade-in */
-        transition: transform 1s ease-out, opacity 1s ease-out;
+        animation: slideInRight 0.6s ease-out, fadeIn 1s forwards;
+        transition: transform 0.5s ease-out, opacity 1s ease-out;
       }
 
       form input,
@@ -80,17 +80,29 @@
 
       #importance-container {
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         margin: 15px 0;
         width: 100%;
       }
 
+      #importance-title {
+        margin-bottom: 10px;
+        font-size: 1.2rem;
+        color: #455a64;
+      }
+
+      #importance-display {
+        margin: 10px 0;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #37474f;
+      }
+
       #importance-range {
         width: 100%;
         max-width: 150px;
-        margin-right: 15px;
-        display: block;
         height: 10px;
         appearance: none;
         background: #e0e0e0;
@@ -98,48 +110,43 @@
       }
 
       #importance-range::-webkit-slider-thumb {
+        -webkit-appearance: none;
         appearance: none;
-        width: 20px;
-        height: 20px;
+        width: 50px;
+        height: 50px;
         border-radius: 50%;
-        background: #64b5f6;
+        background-color: transparent;
         cursor: pointer;
-      }
-
-      #importance-range::-webkit-slider-thumb:hover {
-        background: #42a5f5;
-      }
-
-      #importance-emoji {
-        font-size: 2.5rem;
+        background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ctext x="50%" y="50%" font-size="50" fill="black" dominant-baseline="middle" text-anchor="middle"%3E☃️%3C/text%3E%3C/svg%3E') no-repeat center center;
+        background-size: contain;
       }
 
       #matrix {
-        display: none;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-        max-width: 1200px;
-        margin: 50px auto;
-        width: 100%;
-        height: 400px;
-        overflow-y: auto;
-        margin-top: 20px;
-        animation: fadeInMatrix 1s forwards;
-      }
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Ensure quadrants are large enough */
+    gap: 30px; /* Increased gap between quadrants */
+    max-width: 1500px; /* Increased max width */
+    width: 100%;
+    min-height: 600px; /* Ensures quadrants are always visible */
+    margin: 50px auto;
+    position: relative;
+    transition: transform 1s ease-out;
+    animation: moveMatrixUpAndSide 1s ease-out forwards;
+    overflow: auto; /* Add scrollbar only when necessary */
+}
 
-      .quadrant {
-        border-radius: 12px;
-        padding: 25px;
-        background: #ffffff;
-        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
-        height: 300px;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        opacity: 0;
-        animation: fadeInQuadrant 1s forwards;
-      }
+.quadrant {
+    border-radius: 12px;
+    padding: 30px; /* Increased padding inside each quadrant */
+    background: #ffffff;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+    height: 400px; /* Adjusted quadrant height */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    opacity: 0;
+    animation: fadeInQuadrant 1s forwards;
+}
 
       .quadrant h2 {
         margin-bottom: 15px;
@@ -243,6 +250,16 @@
           opacity: 1;
         }
       }
+
+      /* Move the matrix to the center */
+      @keyframes moveMatrixUpAndSide {
+    0% {
+      transform: translateY(1%) translateX(0);
+    }
+    100% {
+      transform: translateY(-65%) translateX(80%);
+    }
+  }
     </style>
   </head>
 
@@ -254,8 +271,9 @@
       <input type="datetime-local" id="task-deadline" required />
 
       <div id="importance-container">
+        <h2> Mark the importance rate </h2>
         <input type="range" id="importance-range" min="1" max="5" step="1" value="3" />
-        <span id="importance-emoji">🙂</span>
+        <span id="importance-emoji"><h2>✅ Moderately Important</h2></span>
       </div>
 
       <button type="submit">Add Task</button>
@@ -281,12 +299,11 @@
     </div>
 
     <script>
-      // Set default date and time to today at 12:00 PM
       window.addEventListener("DOMContentLoaded", () => {
         const deadlineInput = document.getElementById("task-deadline");
         const now = new Date();
-        now.setHours(12, 0, 0, 0); // Set time to 12:00 PM
-        const formattedDate = now.toISOString().slice(0, 16); // Format to 'YYYY-MM-DDTHH:mm'
+        now.setHours(12, 0, 0, 0);
+        const formattedDate = now.toISOString().slice(0, 16);
         deadlineInput.value = formattedDate;
       });
 
@@ -297,72 +314,76 @@
         const value = importanceRange.value;
         switch (value) {
           case "1":
-            importanceEmoji.textContent = "😟";
+            importanceEmoji.textContent = "🚫 Not Imoprtant";
             break;
           case "2":
-            importanceEmoji.textContent = "😐";
+            importanceEmoji.textContent = "⚠️ Low Importance";
             break;
           case "3":
-            importanceEmoji.textContent = "🙂";
+            importanceEmoji.textContent = "✅ Moderately Important";
             break;
           case "4":
-            importanceEmoji.textContent = "😊";
+            importanceEmoji.textContent = "📈 High Importance";
             break;
           case "5":
-            importanceEmoji.textContent = "🤩";
+            importanceEmoji.textContent = "🌟 Very Important";
             break;
         }
       });
 
-      document.getElementById("task-form").addEventListener("submit", function (event) {
-        event.preventDefault();
+      
+  document.getElementById("task-form").addEventListener("submit", function (event) {
+    event.preventDefault();
 
-        const title = document.getElementById("task-title").value;
-        const deadline = new Date(document.getElementById("task-deadline").value);
-        const importance = parseInt(importanceRange.value, 10);
+    const title = document.getElementById("task-title").value;
+    const deadline = new Date(document.getElementById("task-deadline").value);
+    const importance = parseInt(importanceRange.value, 10);
 
-        if (!importance) {
-          alert("Please select an importance level.");
-          return;
-        }
+    if (!importance) {
+      alert("Please select an importance level.");
+      return;
+    }
 
-        const today = new Date();
-        const diffInDays = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
-        const urgency = diffInDays <= 2;
+    const today = new Date();
+    const diffInDays = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
+    const urgency = diffInDays <= 2;
 
-        let quadrantId;
-        if (urgency && importance >= 4) {
-          quadrantId = "tasks-q1";
-        } else if (!urgency && importance >= 4) {
-          quadrantId = "tasks-q2";
-        } else if (urgency && importance < 4) {
-          quadrantId = "tasks-q3";
-        } else {
-          quadrantId = "tasks-q4";
-        }
+    let quadrantId;
+    if (urgency && importance >= 4) {
+      quadrantId = "tasks-q1";
+    } else if (!urgency && importance >= 4) {
+      quadrantId = "tasks-q2";
+    } else if (urgency && importance < 4) {
+      quadrantId = "tasks-q3";
+    } else {
+      quadrantId = "tasks-q4";
+    }
 
-        const taskElement = document.createElement("li");
-        taskElement.innerHTML = `<span>${title}</span> <span class="deadline">📅 ${deadline.toLocaleDateString()}</span>`;
+    const taskElement = document.createElement("li");
+    taskElement.innerHTML = `<span>${title}</span> <span class="deadline">📅 ${deadline.toLocaleDateString()}</span>`;
 
-        document.getElementById(quadrantId).appendChild(taskElement);
+    document.getElementById(quadrantId).appendChild(taskElement);
 
-        // Ensure matrix remains in place
-        document.getElementById("matrix").style.display = "grid";
+    // Ensure matrix remains visible and move it to center
+    const matrixElement = document.getElementById("matrix");
+    matrixElement.style.display = "grid";
+    
+    // Apply the slide-out effect to the form and leave it there
+    const formElement = document.querySelector("form");
+    formElement.style.animation = "slideOutLeft 0.6s forwards";
 
-        // Slide and squeeze effect for the form and title
-        document.querySelector("h1").style.transform = "translateX(-100%)";
-        document.querySelector("form").style.animation = "slideOutLeft 0.6s ease-out forwards"; // Slide-out to the left
-        document.querySelector("form").style.opacity = "0"; // Fade out the form
-
-        // Reset form without causing layout movement
-        document.getElementById("task-title").value = "";
-        const now = new Date();
-        now.setHours(12, 0, 0, 0);
-        const formattedDate = now.toISOString().slice(0, 16);
-        document.getElementById("task-deadline").value = formattedDate;
-        importanceRange.value = 3;
-        importanceEmoji.textContent = "🙂";
-      });
-    </script>
+    // Clear the form values after the animation
+    setTimeout(() => {
+      // Clear the form values
+      document.getElementById("task-title").value = "";
+      const now = new Date();
+      now.setHours(12, 0, 0, 0);
+      const formattedDate = now.toISOString().slice(0, 16);
+      document.getElementById("task-deadline").value = formattedDate;
+      importanceRange.value = 3;
+      importanceEmoji.textContent = "✅ Moderately Important";
+    }, 600); 
+  });
+</script>
   </body>
 </html>
