@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Drawing and Typing</title>
+<style>
+    body {
+        font-family: 'Roboto', Arial, sans-serif;
+        margin: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: linear-gradient(135deg, #e0f7fa, #80deea);
+        color: #333;
+    }
+    h1 {
+        color: #005662;
+        font-size: 2.5rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        margin-bottom: 20px;
+    }
+    canvas {
+        border: 2px solid #004d40;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        cursor: crosshair;
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s;
+    }
+    canvas:hover {
+        transform: scale(1.02);
+    }
+    #controls {
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
+    }
+    #controls button {
+        padding: 12px 18px;
+        font-size: 14px;
+        color: #fff;
+        background-color: #00796b;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+        font-weight: bold;
+    }
+    #controls button:hover {
+        background-color: #004d40;
+    }
+    #controls button:active {
+        transform: scale(0.95);
+    }
+    #controls input[type="color"] {
+        margin-left: 5px;
+        cursor: pointer;
+        border: none;
+        border-radius: 4px;
+        height: 35px;
+        width: 45px;
+        transition: transform 0.2s;
+    }
+    #controls input[type="color"]:hover {
+        transform: scale(1.1);
+    }
+    label {
+        font-size: 14px;
+        font-weight: bold;
+        color: #004d40;
+        display: flex;
+        align-items: center;
+    }
+</style>
+
+</head>
+<body>
+    <h1>Canvas Drawing and Typing</h1>
+    <canvas id="drawingCanvas" width="800" height="400"></canvas>
+    <div id="controls">
+        <button onclick="clearCanvas()">Clear Canvas</button>
+        <button onclick="undo()">Undo</button>
+        <button onclick="redo()">Redo</button>
+        <button onclick="activateEraser()">Eraser</button>
+        <button onclick="deactivateEraser()">Pen</button>
+        <button onclick="enableTextMode()">Text</button>
+        <label for="penColor">Pen Color:</label>
+        <input type="color" id="penColor" value="#000000" onchange="changePenColor(this.value)">
+        <label for="textColor">Text Color:</label>
+        <input type="color" id="textColor" value="#000000" onchange="changeTextColor(this.value)">
+    </div>
+
+    <script>
+        const canvas = document.getElementById('drawingCanvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        let isEraser = false;
+        let isTextMode = false;
+        let penColor = '#000000';
+        let textColor = '#000000';
+
+        let history = [];
+        let redoStack = [];
+
+        let textBoxes = []; // Array to store multiple text boxes
+        let activeTextBoxIndex = -1; // Track the currently active text box
+        let typingListener = null; // Variable to track the typing listener
+
+        function saveState() {
+            // Save canvas state (including textboxes) to history stack
+            history.push({
+                imageData: canvas.toDataURL(),
+                textBoxes: [...textBoxes] // Clone the text boxes
+            });
+            redoStack = []; // Clear redo stack after a new action
+        }
+
+        function changePenColor(color) {
+            penColor = color;
+            ctx.strokeStyle = penColor;
+        }
+
+        function changeTextColor(color) {
+            textColor = color;
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            if (isTextMode) {
+                const textBox = {
+                    x: e.offsetX,
+                    y: e.offsetY,
+                    text: '',
+                    color: textColor
+                };
+                textBoxes.push(textBox);
+                activeTextBoxIndex = textBoxes.length - 1;
+                renderCanvas();
+                enableTyping();
+                saveState();    
+            } else {
+                isDrawing = true;
+                ctx.beginPath();
+                ctx.moveTo(e.offsetX, e.offsetY);
+                if (!isEraser) saveState();
+            }
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (isDrawing) {
+                if (isEraser) {
+                    ctx.globalCompositeOperation = 'destination-out';
+                    ctx.arc(e.offsetX, e.offsetY, 8, 0, Math.PI * 2, false);
+                    ctx.fill();
+                } else {
+                    ctx.globalCompositeOperation = 'source-over';
+                    ctx.strokeStyle = penColor;
+                    ctx.lineTo(e.offsetX, e.offsetY);
+                    ctx.stroke();
+                }
+            }
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            isDrawing = false;
+            ctx.closePath();
+            if (!isEraser) saveState();
+        });
+
+        function enableTyping() {
+            // Remove previous typing listener if active
+            if (typingListener) {
+                document.removeEventListener('keydown', typingListener);
+            }
+
+            typingListener = (e) => {
+                if (activeTextBoxIndex !== -1) {
+                    const currentTextBox = textBoxes[activeTextBoxIndex];
+
+                    if (e.key === 'Enter') {
+                        // Finish text input
+                        document.removeEventListener('keydown', typingListener);
+                        typingListener = null;
+                        activeTextBoxIndex = -1;
+                    } else if (e.key === 'Backspace') {
+                        // Remove last character
+                        currentTextBox.text = currentTextBox.text.slice(0, -1);
+                    } else if (e.key.length === 1) {
+                        // Add printable characters
+                        currentTextBox.text += e.key;
+                    }
+                    renderCanvas();
+                }
+            };
+
+            // Attach new typing listener
+            document.addEventListener('keydown', typingListener);
+        }
+
+        function renderCanvas() {
+            clearCanvas(false); // Clear but preserve drawings
+
+            textBoxes.forEach((textBox) => {
+                ctx.fillStyle = textBox.color;
+                ctx.font = '20px Arial'; // Increase font size to 20px
+                ctx.fillText(textBox.text, textBox.x, textBox.y);
+            });
+        }
+
+        function clearCanvas(clearAll = true) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (!clearAll) {
+                textBoxes.forEach((textBox) => {
+                    ctx.fillStyle = textBox.color;
+                    ctx.font = '20px Arial'; // Increase font size to 20px
+                    ctx.fillText(textBox.text, textBox.x, textBox.y);
+                });
+            } else {
+                // Reset text boxes when clearing all
+                textBoxes = [];
+                activeTextBoxIndex = -1;
+            }
+        }
+
+        function undo() {
+            if (history.length > 0) {
+                redoStack.push(history.pop());
+                const lastState = history.length > 0 ? history[history.length - 1] : null;
+                const img = new Image();
+                img.onload = () => {
+                    clearCanvas();
+                    ctx.drawImage(img, 0, 0);
+                    if (lastState) {
+                        textBoxes = [...lastState.textBoxes]; // Restore textboxes
+                        renderCanvas();
+                    }
+                };
+                if (lastState) img.src = lastState.imageData;
+            }
+        }
+
+        function redo() {
+            if (redoStack.length > 0) {
+                const state = redoStack.pop();
+                history.push(state);
+                const img = new Image();
+                img.onload = () => {
+                    clearCanvas();
+                    ctx.drawImage(img, 0, 0);
+                    textBoxes = [...state.textBoxes]; // Restore textboxes
+                    renderCanvas();
+                };
+                img.src = state.imageData;
+            }
+        }
+
+        function activateEraser() {
+            isEraser = true;
+            ctx.lineWidth = 16;
+        }
+
+        function deactivateEraser() {
+            isEraser = false;
+            ctx.lineWidth = 2;
+        }
+
+        function enableTextMode() {
+            isTextMode = true;
+            canvas.style.cursor = 'text';
+        }
+
+        canvas.addEventListener('dblclick', () => {
+            isTextMode = false;
+            canvas.style.cursor = 'crosshair';
+        });
+    </script>
+</body>
+</html>

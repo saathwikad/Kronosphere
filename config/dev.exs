@@ -2,10 +2,10 @@ import Config
 
 # Configure your database
 config :ksphoenix, Ksphoenix.Repo,
-  username: "pooja",
-  password: "poojithapanja",
+  username: "saathwikad",
+  password: "saathwikad",
   hostname: "localhost",
-  database: "kronospheredb",
+  database: "ksphoenix_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
