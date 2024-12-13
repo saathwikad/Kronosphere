@@ -28,6 +28,12 @@ defmodule KsphoenixWeb.Router do
     get "/todolist", PageController, :todolist
   end
 
+  # scope "/", KsphoenixWeb do
+  #   pipe_through :browser
+
+  #   get "/todolist", PageController, :todolist
+  # end
+
   # Other scopes may use custom stacks.
   # scope "/api", KsphoenixWeb do
   #   pipe_through :api
