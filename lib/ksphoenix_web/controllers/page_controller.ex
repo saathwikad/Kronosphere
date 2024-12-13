@@ -6,4 +6,10 @@ defmodule KsphoenixWeb.PageController do
     # so skip the default app layout.
     render(conn, :home, layout: false)
   end
+  def todolist(conn, _params) do
+    render(conn, :todolist)
+  end
+  def canvas(conn, _params) do
+    render(conn, :canvas, layout: false)
+  end
 end

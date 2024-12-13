@@ -3,6 +3,26 @@ defmodule Ksphoenix.Tasks.Task do
   import Ecto.Changeset
 
   schema "tasks" do
+    field :task, :string
+    field :date, :date
+    ield :status, :string, default: "pending"
+    field :description, :string
+    field :title, :string
+    field :due_date, :date
+    field :is_completed, :boolean, default: false
+    field :task_type, :string
+
+    timestamps()
+  end
+
+  def changeset(task, attrs) do
+    task
+    |> cast(attrs, [:task, :date])
+    |> validate_required([:task, :date])
+  end
+end
+
+  schema "tasks" do
     field :status, :string, default: "pending"
     field :description, :string
     field :title, :string

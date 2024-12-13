@@ -1,4 +1,5 @@
 defmodule KsphoenixWeb.Router do
+  alias KsphoenixWeb.Live.CalendarComponent
   use KsphoenixWeb, :router
 
   import KsphoenixWeb.UserAuth
@@ -21,8 +22,41 @@ defmodule KsphoenixWeb.Router do
   scope "/", KsphoenixWeb do
     pipe_through :browser
 
+
     # Add general-purpose routes here in the future, if needed
+    live "/events", EventLive.Index, :index
+    live "/events/new", EventLive.Index, :new
+    live "/events/:id/edit", EventLive.Index, :edit
+
+    live "/events/:id", EventLive.Show, :show
+    live "/events/:id/show/edit", EventLive.Show, :edit
   end
+
+
+  scope "/", KsphoenixWeb do
+    pipe_through :browser
+    live "/posts", PostLive.Index, :index
+    live "/posts/new", PostLive.Index, :new
+    live "/posts/:id/edit", PostLive.Index, :edit
+
+    live "/posts/:id", PostLive.Show, :show
+    live "/posts/:id/show/edit", PostLive.Show, :edit
+    live "/calendar", Live.CalendarLive
+
+
+    get "/canvas", PageController, :canvas
+  end
+  scope "/", KsphoenixWeb do
+    pipe_through :browser
+
+    get "/todolist", PageController, :todolist
+  end
+
+  # scope "/", KsphoenixWeb do
+  #   pipe_through :browser
+
+  #   get "/todolist", PageController, :todolist
+  # end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:ksphoenix, :dev_routes) do
@@ -87,4 +121,10 @@ end
       live "/users/confirm", UserConfirmationInstructionsLive, :new
     end
   end
+      live "/posts", PostLive.Index, :index
+    live "/posts/new", PostLive.Index, :new
+    live "/posts/:id/edit", PostLive.Index, :edit
+
+    live "/posts/:id", PostLive.Show, :show
+    live "/posts/:id/show/edit", PostLive.Show, :edit
 end

@@ -1,0 +1,82 @@
+<head>
+  <!-- FullCalendar CSS from CDN -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.15/fullcalendar.min.css" rel="stylesheet" />
+  
+  <!-- Moment.js (optional, FullCalendar no longer requires it in newer versions) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+  <!-- FullCalendar JS from CDN, with type="module" -->
+  <script type="module">
+    import { Calendar } from 'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.15/index.global.min.js';
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var calendarEl = document.getElementById('calendar');
+      var calendar = new Calendar(calendarEl, {
+        plugins: ['dayGrid', 'interaction'],
+        dateClick: function(info) {
+          // Show modal when a date is clicked
+          @this.push('show_modal', { date: info.dateStr });
+        },
+        events: <%= encode_events(@events) %>
+      });
+      calendar.render();
+    });
+  </script>
+</head>
+
+<body>
+  <div id="calendar"></div>
+
+  <%= if @show_modal do %>
+    <div id="event-modal" class="modal">
+      <div class="modal-content">
+        <span class="close" phx-click="hide_modal">&times;</span>
+        <h2>Add Event</h2>
+        <form phx-submit="add_event">
+          <input type="hidden" name="date" value={@selected_date} />
+          <input type="text" name="title" placeholder="Event Title" required />
+          <input type="text" name="description" placeholder="Event Description" />
+          <button type="submit">Add Event</button>
+        </form>
+      </div>
+    </div>
+  <% end %>
+
+  <style>
+    /* Basic styles for the modal */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto; /* 15% from the top and centered */
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%; /* Could be more or less, depending on screen size */
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+</body>
