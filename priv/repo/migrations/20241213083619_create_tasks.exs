@@ -8,7 +8,6 @@ defmodule Ksphoenix.Repo.Migrations.CreateTasks do
 
       timestamps()
     end
-
     create index(:tasks, [:date])
   end
 end

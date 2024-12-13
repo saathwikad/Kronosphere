@@ -22,7 +22,6 @@ defmodule KsphoenixWeb.Router do
     pipe_through :browser
 
 
-    get "/", PageController, :home
     live "/events", EventLive.Index, :index
     live "/events/new", EventLive.Index, :new
     live "/events/:id/edit", EventLive.Index, :edit
@@ -41,7 +40,7 @@ defmodule KsphoenixWeb.Router do
     live "/posts/:id", PostLive.Show, :show
     live "/posts/:id/show/edit", PostLive.Show, :edit
     live "/calendar", Live.CalendarLive
-
+    live "/timer", TimerLive
 
     get "/canvas", PageController, :canvas
   end
@@ -73,6 +72,7 @@ defmodule KsphoenixWeb.Router do
   scope "/", KsphoenixWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
+    get "/", PageController, :home
     live_session :redirect_if_user_is_authenticated,
       on_mount: [{KsphoenixWeb.UserAuth, :redirect_if_user_is_authenticated}] do
       live "/users/register", UserRegistrationLive, :new
@@ -89,8 +89,10 @@ defmodule KsphoenixWeb.Router do
 
     live_session :require_authenticated_user,
       on_mount: [{KsphoenixWeb.UserAuth, :ensure_authenticated}] do
+      live "/home", HomeLive, :index
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+      live "/todos", TodoLive.Index, :index
     end
   end
 

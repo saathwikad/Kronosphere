@@ -2,8 +2,8 @@ import Config
 
 # Configure your database
 config :ksphoenix, Ksphoenix.Repo,
-  username: "anamitra",
-  password: "anamitra",
+  username: "postgres",
+  password: "postgres",
   hostname: "localhost",
   database: "anamitra",
   stacktrace: true,
