@@ -22,6 +22,11 @@ defmodule KsphoenixWeb.Router do
 
     get "/", PageController, :home
   end
+  scope "/", KsphoenixWeb do
+    pipe_through :browser
+
+    get "/todolist", PageController, :todolist
+  end
 
   scope "/", KsphoenixWeb do
     pipe_through :browser
