@@ -78,7 +78,6 @@ Please refer to the **[Phoenix Deployment Guides](https://hexdocs.pm/phoenix/dep
 ### Resources
 - **Official Website**: [Phoenix Framework](https://www.phoenixframework.org/)
 - **Guides**: [Phoenix Documentation](https://hexdocs.pm/phoenix/overview.html)
-- **Docs**: [Documentation](https://hexdocs.pm/phoenix)
 - **Forum**: [Phoenix Forum](https://elixirforum.com/c/phoenix-forum)
 - **Source Code**: [Phoenix GitHub Repository](https://github.com/phoenixframework/phoenix)
 
