@@ -4,7 +4,7 @@ defmodule Ksphoenix.Timeline.Post do
 
   schema "posts" do
     field :body, :string
-    field :username, :string, default: "anamitra_joshi"
+    field :username, :string
 
     timestamps()
   end
@@ -12,7 +12,7 @@ defmodule Ksphoenix.Timeline.Post do
   @doc false
   def changeset(post, attrs) do
     post
-    |> cast(attrs, [:username, :body])
+    |> cast(attrs, [:body])
     |> validate_required([:body])
     |> validate_length(:body, min: 2, max: 1000)
   end
